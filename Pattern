@@ -1,29 +1,43 @@
-//** EIGEN VALUE AND EIGEN VECTOR**//
+//**scatterplot**//
 import numpy as np
-import math
-row=int(input("Enter the row : "))
-col=int(input("Enter the column : "))
-matrix=[]
-print("Enter the matrix in row wise")
-for i in range(row) :
-    a=[]
-    for j in range(col) :
-        a.append(int(input("Enter a number : ")))
-    matrix.append(a)
-matrix=np.array(matrix)
-b=matrix[0][0]*matrix[1][1]
-c=(matrix[0][0]*matrix[1][1])-(matrix[1][0]*matrix[0][1])
-det=((b**2)-(4*1*c))
-if(det==0):
-    r1=(-b)/2
-    print("The roots are same and real and value is",r1)
-elif(det>0):
-    r1=((-b)+math.sqrt(det))/2
-    r2=((-b)-math.sqrt(det))/2 
-    print("The eigenvalues are different but real and value is %d %d ." %(r1,r2))
-else :
-    print("The eigenvalues are complex .")
-iden=np.identity(row)
-matrix=matrix-iden
-inverse=np.linalg.inv(matrix)
-print("The Eigen Vector is \n",inverse)
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,3.5],[1,4,8,15.5],"r")
+plt.show
+
+//** COVARIENCE **//
+import numpy as np
+n=int(input("Enter the total number of element : "))
+cov_matrix=np.zeros((2,2))
+arr=[]
+arr1=[]
+for i in range(n):
+    ele=float(input("Enter the value of 1st array: "))
+    arr.append(ele)
+i=0
+print("For second array")
+for j in range(n):
+    ele=float(input("Enter the value for 2nd array: "))
+    arr1.append(ele)
+j=0
+sum1=0
+sum2=0
+sum3=0
+arr=np.array(arr)
+arr1=np.array(arr1)
+x=(np.sum(arr))/n
+y=(np.sum(arr1))/n
+for i in range(n): #covarience of x,y 
+    sum1=sum1+(arr[i]-x)*(arr1[i]-y)
+final1=sum1/(n-1)    
+for i in range(n): #varience of x
+    sum2=sum2+((arr[i]-x)*(arr[i]-x))
+final2=sum2/(n-1)
+for i in range(n): #varience of y
+    sum3=sum3+((arr1[i]-y)*(arr1[i]-y))
+final3=sum3/(n-1)
+cov_matrix[0][0]=final2
+cov_matrix[0][1]=final1
+cov_matrix[1][0]=final1
+cov_matrix[1][1]=final3
+print(cov_matrix)
