@@ -41,3 +41,24 @@ cov_matrix[0][1]=final1
 cov_matrix[1][0]=final1
 cov_matrix[1][1]=final3
 print(cov_matrix)
+
+
+
+//** EIGEN VALUE**//
+import numpy as np
+row=int(input("Enter the row : "))
+col=int(input("Enter the column : "))
+matrix=[]
+print("Enter the matrix in row wise")
+for i in range(row) :
+    a=[]
+    for j in range(col) :
+        a.append(int(input("Enter a number : ")))
+    matrix.append(a)
+matrix = np.array(matrix)
+  
+print("Printing the Original square array:\n",matrix)
+ev, e_vac = np.linalg.eig(matrix)
+print("Eigen values of the array:\n",ev)
+  
+print("Eigen vectors of the array:\n",e_vac)
