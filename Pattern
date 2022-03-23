@@ -17,6 +17,9 @@ for i in range(n):
     y.append(a2)
 
 plt.scatter(x, y)
+plt.xlabel("Numbers in array")
+ply.ylabel("Range")
+plt.title("Scatter plot")
 plt.show()
 
 //** COVARIENCE **//
