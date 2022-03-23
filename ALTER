@@ -1,0 +1,37 @@
+import matplotlib.pyplot as plt
+import numpy as np
+arr=np.random.randint(8,size=(2,2))
+arr
+
+l=len(arr)
+x=[arr[i][j] for i in range(len(arr)) for j in range(len(arr))]
+
+y=[i for i in range(l*l)]
+plt.scatter(x,y,color='Red')
+plt.xlabel("Numbers in array")
+plt.ylabel("Range")
+plt.title("Scatter plot")
+plt.show()
+print(x)
+import math
+
+
+b=-(x[0]+x[3])
+c=(x[0]*x[3])-(x[1]*x[2])
+a=1
+y=(-b+math.sqrt(b**2-4*a*c))/(2*a)
+s=(-b-math.sqrt(b**2-4*a*c))/(2*a)
+v=[y,s]
+v
+new=np.array([[x[0]-y,x[1]],[x[2],x[3]-y]])
+new_1=np.array([[x[0]-s,x[1]],[x[2],x[3]-s]])
+
+
+v,new,new_1
+m=(new[0][0]/new[1][0])
+n=1
+o=(new_1[0][0]/new_1[1][0])
+p=1
+
+
+print(m,n,o,p)
