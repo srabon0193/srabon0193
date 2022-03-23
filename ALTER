@@ -1,8 +1,23 @@
-import matplotlib.pyplot as plt
 import numpy as np
-arr=np.random.randint(8,size=(2,2))
-arr
 
+import matplotlib.pyplot as plt
+import math
+n=int(input("Enter the array size ="))
+p=[]
+q=[]
+
+print("INPUT FOR 1ST ARRAY")
+for i in range(n):
+    a1=int(input("Enter the value : "))
+    p.append(a1)
+
+print("INPUT FOR 2ND ARRAY")
+for i in range(n):
+    a2=int(input("Enter the value: "))
+    q.append(a2)
+
+arr=p,q
+print("MATRIX\n",arr)
 l=len(arr)
 x=[arr[i][j] for i in range(len(arr)) for j in range(len(arr))]
 
@@ -12,10 +27,7 @@ plt.xlabel("Numbers in array")
 plt.ylabel("Range")
 plt.title("Scatter plot")
 plt.show()
-print(x)
-import math
-
-
+x
 b=-(x[0]+x[3])
 c=(x[0]*x[3])-(x[1]*x[2])
 a=1
@@ -32,6 +44,3 @@ m=(new[0][0]/new[1][0])
 n=1
 o=(new_1[0][0]/new_1[1][0])
 p=1
-
-
-print(m,n,o,p)
