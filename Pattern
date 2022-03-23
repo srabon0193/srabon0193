@@ -79,3 +79,35 @@ ev, e_vac = np.linalg.eig(matrix)
 print("Eigen values of the array:\n",ev)
   
 print("Eigen vectors of the array:\n",e_vac)
+
+
+            OR
+            
+            
+           
+import numpy as np
+import math
+row=int(input("Enter the row : "))
+col=int(input("Enter the column : "))
+matrix=[]
+print("Enter the matrix in row wise")
+for i in range(row) :
+    a=[]
+    for j in range(col) :
+        a.append(int(input("Enter a number : ")))
+    matrix.append(a)
+print("MAT",matrix)
+matrix=np.array(matrix)
+print("MAT2",matrix)
+b=matrix[0][0]*matrix[1][1]
+c=(matrix[0][0]*matrix[1][1])-(matrix[1][0]*matrix[0][1])
+det=((b**2)-(4*1*c))
+if(det==0):
+    r1=(-b)/2
+    print("The roots are same and real and value is",r1)
+elif(det>0):
+    r1=((-b)+math.sqrt(det))/2
+    r2=((-b)-math.sqrt(det))/2 
+    print("The eigenvalues are different but real and value is %d %d ." %(r1,r2))
+else :
+    print("The eigenvalues are complex .")
