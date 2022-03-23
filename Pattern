@@ -2,8 +2,22 @@
 import numpy as np
 
 import matplotlib.pyplot as plt
-plt.plot([1,2,3,3.5],[1,4,8,15.5],"r")
-plt.show
+n=int(input("Enter the array size ="))
+x=[]
+y=[]
+
+print("INPUT FOR 1ST ARRAY")
+for i in range(n):
+    a1=float(input("Enter the value : "))
+    x.append(a1)
+
+print("INPUT FOR 2ND ARRAY")
+for i in range(n):
+    a2=float(input("Enter the value: "))
+    y.append(a2)
+
+plt.scatter(x, y)
+plt.show()
 
 //** COVARIENCE **//
 import numpy as np
