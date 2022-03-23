@@ -18,7 +18,7 @@ for i in range(n):
 
 plt.scatter(x, y)
 plt.xlabel("Numbers in array")
-ply.ylabel("Range")
+plt.ylabel("Range")
 plt.title("Scatter plot")
 plt.show()
 
