@@ -1,0 +1,259 @@
+************************* KNN ****************************
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+iris.feature_names
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df.head()
+
+df['target'] = iris.target
+df.head()
+
+df[df.target==1].head()
+df[df.target==2].head()
+
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+%matplotlib inline
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='*')
+
+plt.xlabel('Petal Length')
+plt.ylabel('Petal Width')
+plt.scatter(df0['petal length (cm)'], df0['petal width (cm)'],color="green",marker='+')
+plt.scatter(df1['petal length (cm)'], df1['petal width (cm)'],color="blue",marker='*')
+
+from sklearn.model_selection import train_test_split
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+len(X_train)
+len(X_test)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+print("Accuracy=",knn.score(X_test, y_test))
+
+from sklearn.metrics import confusion_matrix
+y_pred = knn.predict(X_test)
+cm = confusion_matrix(y_test, y_pred)
+cm
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+import seaborn as sn
+plt.figure(figsize=(7,5))
+sn.heatmap(cm, annot=True)
+plt.xlabel('Predicted')
+plt.ylabel('Truth')
+
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+X_pca.shape
+X_pca
+
+X_train_pca, X_test_pca, y_train, y_test = train_test_split(X_pca, y, test_size=0.2, random_state=1)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train_pca, y_train)
+print("Accuracy :",knn.score(X_test_pca,y_test))
+
+from sklearn.metrics import confusion_matrix
+y_pred = knn.predict(X_test_pca)
+cm = confusion_matrix(y_test, y_pred)
+cm
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+import seaborn as sn
+plt.figure(figsize=(7,5))
+sn.heatmap(cm, annot=True)
+plt.xlabel('Predicted')
+plt.ylabel('Truth')
+
+
+
+
+
+**************** SCATTERPLOT ********************
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+iris.feature_names
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df['target'] = iris.target
+df.head()
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+#2D
+%matplotlib inline
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='*')
+
+#3D
+%matplotlib notebook
+ax= plt.axes(projection='3d')
+fg=ax.scatter3D(df['sepal length (cm)'], df['sepal width (cm)'], df['petal length (cm)'], alpha=0.4)
+ax.set_xlabel("Sepal length")
+ax.set_ylabel("Sepal width")
+ax.set_zlabel("Petal length")
+
+
+
+***************************** KMEANS **************************************
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+
+iris = datasets.load_iris()
+print(iris.feature_names)
+
+df= pd.DataFrame({
+    'x': iris.data[:,0],
+    'y': iris.data[:,1],
+    'cluster': iris.target
+})
+
+df
+
+centro={}
+for i in range(3):
+    result_list=[]
+    result_list.append(df.loc[df['cluster'] == i]['x'].mean())
+    result_list.append(df.loc[df['cluster'] == i]['y'].mean())
+    centro[i]=result_list
+centro
+
+plt.scatter(df['x'],df['y'])
+plt.xlabel('Speal Length')
+plt.ylabel('Sepal Width')
+colmap={0:'r',1:'g',2:'b'}
+col=[0,1]
+for i in range(3):
+    plt.scatter(centro[i][0],centro[i][1], color=colmap[i])
+plt.show()
+
+def assignment(df, centro):
+    for i in range(3):
+        # sqrt((x1 - x2)^2 + (y1 - y2)^2)
+        df['distance_from_{}'.format(i)] = (
+            np.sqrt(
+                (df['x'] - centro[i][0]) ** 2
+                + (df['y'] - centro[i][1]) ** 2
+            )
+        )
+    centroid_distance_cols = ['distance_from_{}'.format(i) for i in centro.keys()]
+    df['closest'] = df.loc[:, centroid_distance_cols].idxmin(axis=1)
+    df['closest'] = df['closest'].map(lambda x: int(x.lstrip('distance_from_')))
+    df['color'] = df['closest'].map(lambda x: colmap[x])
+    return df
+
+df = assignment(df, centro)
+df
+
+plt.scatter(df['x'], df['y'], color=df['color'], alpha=0.3)
+for i in range(3):
+    plt.scatter(*centro[i], color=colmap[i])
+
+plt.show()
+
+def update(k):
+    for i in range(3):
+        centro[i][0] = np.mean(df[df['closest'] == i]['x'])
+        centro[i][1] = np.mean(df[df['closest'] == i]['y'])
+    return k
+
+centro = update(centro)
+centro
+
+plt.scatter(df['x'], df['y'], color=df['color'], alpha=0.3)
+for i in range(3):
+    plt.scatter(*centro[i], color=colmap[i])
+
+plt.show()
+
+df = assignment(df, centro)
+plt.scatter(df['x'], df['y'], color=df['color'], alpha=0.3)
+for i in range(3):
+    plt.scatter(centro[i][0],centro[i][1], color=colmap[i])
+plt.show()
+
+while True:
+    closest_centroids = df['closest'].copy(deep=True)
+    centro = update(centro)
+    df = assignment(df, centro)
+    if closest_centroids.equals(df['closest']):
+        break
+
+
+plt.scatter(df['x'], df['y'], color=df['color'])
+for i in range(3):
+    plt.scatter(centro[i][0],centro[i][1], color=colmap[i])
+
+plt.show()
+
+################################################################    OR    #############################################################
+from sklearn.cluster import KMeans
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler 
+from matplotlib import pyplot as plt
+from sklearn import datasets
+%matplotlib inline
+
+iris = datasets.load_iris()
+iris.feature_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df['target'] = iris.target
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+plt.scatter(df['sepal length (cm)'],df['sepal width (cm)'])
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+
+from sklearn.model_selection import train_test_split
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+
+km = KMeans(n_clusters=3)
+y_predicted = km.fit_predict(X_train, y_train)
+y_predicted
+
+df0 = df[df.target==0]
+df1 = df[df.target==1]
+df2 = df[df.target==2]
+
+plt.scatter(df0['sepal length (cm)'],df0['sepal width (cm)'],color='green')
+plt.scatter(df1['sepal length (cm)'],df1['sepal width (cm)'],color='red')
+plt.scatter(df2['sepal length (cm)'],df2['sepal width (cm)'],color='blue')
+plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1],color='purple',marker='+',label='centroid') 
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+
