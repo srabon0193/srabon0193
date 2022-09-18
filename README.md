@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @srabon kumar ghosh 3rd year student 
+- 👋 Hi, I’m srabon kumar ghosh
 - 👀 I’m interested in Coding
 - 🌱 I’m currently learning web development
 - 📫 How to reach me linkedin- https://www.linkedin.com/in/srabon-kumar-ghosh-183244215/
